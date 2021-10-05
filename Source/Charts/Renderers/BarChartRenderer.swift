@@ -443,6 +443,14 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             context.clip()
             context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
 
+            if let dataProvider = dataProvider {
+                let path = UIBezierPath(roundedRect: barRect,
+                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
+                                        cornerRadii: dataProvider.barSettings.cornerRadii)
+                context.addPath(path.cgPath)
+                context.fillPath()
+            }
+            
             if drawBorder
             {
                 context.setStrokeColor(dataSet.barBorderColor.cgColor)
@@ -499,8 +507,8 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                                         byRoundingCorners: dataProvider.barSettings.rectCorner,
                                         cornerRadii: dataProvider.barSettings.cornerRadii)
                 context.addPath(path.cgPath)
+                context.fillPath()
             }
-            context.fillPath()
             
             if drawBorder
             {
