@@ -439,17 +439,17 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             guard viewPortHandler.isInBoundsRight(barRect.minX) else { break }
 
             context.beginPath()
-            context.addRect(barRect)
-            context.clip()
-            context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
-
             if let dataProvider = dataProvider {
                 let path = UIBezierPath(roundedRect: barRect,
                                         byRoundingCorners: dataProvider.barSettings.rectCorner,
                                         cornerRadii: dataProvider.barSettings.cornerRadii)
                 context.addPath(path.cgPath)
                 context.fillPath()
+            } else {
+                context.addRect(barRect)
             }
+            context.clip()
+            context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
             
             if drawBorder
             {
