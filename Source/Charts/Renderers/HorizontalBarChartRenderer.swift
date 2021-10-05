@@ -286,6 +286,7 @@ open class HorizontalBarChartRenderer: BarChartRenderer
                     element.accessibilityFrame = barRect
                 }
 
+                guard accessibilityOrderedElements.count > j/stackSize else { return }
                 accessibilityOrderedElements[j/stackSize].append(element)
             }
         }
