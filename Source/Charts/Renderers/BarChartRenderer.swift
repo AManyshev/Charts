@@ -439,21 +439,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             guard viewPortHandler.isInBoundsRight(barRect.minX) else { break }
 
             context.beginPath()
-//            context.addRect(barRect)
-//            context.clip()
             let path = CGPath(roundedRect: barRect,
                               cornerWidth: dataProvider?.barSettings.cornerRadii.width ?? .zero,
                               cornerHeight: dataProvider?.barSettings.cornerRadii.height ?? .zero,
                               transform: nil)
             context.addPath(path)
             context.clip()
-//            if let dataProvider = dataProvider {
-//                let path = UIBezierPath(roundedRect: barRect,
-//                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
-//                                        cornerRadii: dataProvider.barSettings.cornerRadii)
-//                context.addPath(path.cgPath)
-//                context.fillPath()
-//            }
             
             context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
             
@@ -508,13 +499,11 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            if let dataProvider = dataProvider {
-                let path = UIBezierPath(roundedRect: barRect,
-                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
-                                        cornerRadii: dataProvider.barSettings.cornerRadii)
-                context.addPath(path.cgPath)
-                context.fillPath()
-            }
+            let path = UIBezierPath(roundedRect: barRect,
+                                    byRoundingCorners: dataProvider?.barSettings.rectCorner ?? [.allCorners],
+                                    cornerRadii: dataProvider?.barSettings.cornerRadii ?? .zero)
+            context.addPath(path.cgPath)
+            context.fillPath()
             
             if drawBorder
             {
