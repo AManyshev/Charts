@@ -432,23 +432,28 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
 
         for (barIndex, barRect) in buffer.enumerated()
         {
-//            context.saveGState()
-//            defer { context.restoreGState() }
+            context.saveGState()
+            defer { context.restoreGState() }
 
             guard viewPortHandler.isInBoundsLeft(barRect.maxX) else { continue }
             guard viewPortHandler.isInBoundsRight(barRect.minX) else { break }
 
-//            context.beginPath()
+            context.beginPath()
 //            context.addRect(barRect)
 //            context.clip()
-            
-            if let dataProvider = dataProvider {
-                let path = UIBezierPath(roundedRect: barRect,
-                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
-                                        cornerRadii: dataProvider.barSettings.cornerRadii)
-                context.addPath(path.cgPath)
-                context.fillPath()
-            }
+            let path = CGPath(roundedRect: barRect,
+                              cornerWidth: dataProvider?.barSettings.cornerRadii.width ?? .zero,
+                              cornerHeight: dataProvider?.barSettings.cornerRadii.height ?? .zero,
+                              transform: nil)
+            context.addPath(path)
+            context.clip()
+//            if let dataProvider = dataProvider {
+//                let path = UIBezierPath(roundedRect: barRect,
+//                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
+//                                        cornerRadii: dataProvider.barSettings.cornerRadii)
+//                context.addPath(path.cgPath)
+//                context.fillPath()
+//            }
             
             context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
             
