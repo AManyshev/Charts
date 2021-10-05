@@ -438,9 +438,9 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             guard viewPortHandler.isInBoundsLeft(barRect.maxX) else { continue }
             guard viewPortHandler.isInBoundsRight(barRect.minX) else { break }
 
-            context.beginPath()
-            context.addRect(barRect)
-            context.clip()
+//            context.beginPath()
+//            context.addRect(barRect)
+//            context.clip()
             
             if let dataProvider = dataProvider {
                 let path = UIBezierPath(roundedRect: barRect,
