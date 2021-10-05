@@ -366,7 +366,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         }
     }
 
-    private func drawGradientBars(context: CGContext, dataSet: IBarChartDataSet, dateSetIndex index: Int, buffer: BarChartRenderer.Buffer, matrix: CGAffineTransform)
+    private func drawGradientBars(context: CGContext, dataSet: BarChartDataSetProtocol, dateSetIndex index: Int, buffer: BarChartRenderer.Buffer, matrix: CGAffineTransform)
     {
 
         guard let gradientPositions = dataSet.gradientPositions else
@@ -375,7 +375,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             return
         }
 
-        guard let boundingBox = buffer.rects.union() else { return }
+        guard let boundingBox = buffer.union() else { return }
         guard !boundingBox.isNull, !boundingBox.isInfinite, !boundingBox.isEmpty else { return }
 
         let drawBorder = dataSet.barBorderWidth > 0
@@ -430,7 +430,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         let isStacked = dataSet.isStacked
         let stackSize = isStacked ? dataSet.stackSize : 1
 
-        for (barIndex, barRect) in buffer.rects.enumerated()
+        for (barIndex, barRect) in buffer.enumerated()
         {
             context.saveGState()
             defer { context.restoreGState() }
@@ -467,7 +467,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         }
     }
 
-    private func drawNormalBars(context: CGContext, dataSet: IBarChartDataSet, dateSetIndex index: Int, buffer: BarChartRenderer.Buffer)
+    private func drawNormalBars(context: CGContext, dataSet: BarChartDataSetProtocol, dateSetIndex index: Int, buffer: BarChartRenderer.Buffer)
     {
         let drawBorder = dataSet.barBorderWidth > 0
         let isSingleColor = dataSet.colors.count == 1
@@ -494,11 +494,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            
-            let path = UIBezierPath(roundedRect: barRect,
-                                    byRoundingCorners: dataProvider.barSettings.rectCorner,
-                                    cornerRadii: dataProvider.barSettings.cornerRadii)
-            context.addPath(path.cgPath)
+            if let dataProvider = dataProvider {
+                let path = UIBezierPath(roundedRect: barRect,
+                                        byRoundingCorners: dataProvider.barSettings.rectCorner,
+                                        cornerRadii: dataProvider.barSettings.cornerRadii)
+                context.addPath(path.cgPath)
+            }
             context.fillPath()
             
             if drawBorder
