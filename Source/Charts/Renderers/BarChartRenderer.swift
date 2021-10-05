@@ -440,6 +440,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
 
             context.beginPath()
             context.addRect(barRect)
+            context.clip()
             
             if let dataProvider = dataProvider {
                 let path = UIBezierPath(roundedRect: barRect,
@@ -449,7 +450,6 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.fillPath()
             }
             
-            context.clip()
             context.drawLinearGradient(gradient, start: gradientStart, end: gradientEnd, options: [])
             
             if drawBorder
